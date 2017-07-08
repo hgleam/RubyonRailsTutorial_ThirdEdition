@@ -9,12 +9,6 @@ class User < ActiveRecord::Base
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
 
-  # 永続的セッションで使用するユーザーをデータベースに記憶する
-  def remember
-    self.remember_token = User.new_token
-    update.attribute(:remember_digest, User.digest(remember_token))
-  end
-
   # 与えられた文字列のハッシュ値を返す
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -25,6 +19,12 @@ class User < ActiveRecord::Base
   # ランダムなトークンを返す
   def User.new_token
     SecureRandom.urlsafe_base64
+  end
+
+  # 永続的セッションで使用するユーザーをデータベースに記憶する
+  def remember
+    self.remember_token = User.new_token
+    update.attribute(:remember_digest, User.digest(remember_token))
   end
 
 end
