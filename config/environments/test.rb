@@ -9,7 +9,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
-  # preloads Rails for running tests, you may have to set it to true.
+  # preloads Rails for running testfvs, you may have to set it to true.
   config.eager_load = false
 
   # Configure static file server for tests with Cache-Control for performance.
@@ -30,6 +30,7 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_url_options = { host: 'example.com' }
 
   # Randomize the order test cases are executed.
   config.active_support.test_order = :random
