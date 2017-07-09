@@ -36,6 +36,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 
   test 'successful edit with friendly forwarding' do
     get edit_user_path(@user)
+    get user_path(@user) # users#showはフレンドリーフォワーディング対象外
     log_in_as(@user)
     assert_redirected_to edit_user_path(@user)
     name = "Foo Bar"
@@ -50,5 +51,8 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     @user.reload
     assert_equal name, @user.name
     assert_equal email, @user.email
+    log_in_as(@user)
+    follow_redirect!
+    assert_select "title", "#{@user.name} | Ruby on Rails Tutorial Sample App"
   end
 end
