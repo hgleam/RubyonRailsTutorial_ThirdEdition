@@ -1,6 +1,6 @@
 class PasswordResetsController < ApplicationController
   before_action :get_user,         only: [:edit, :update]
-  before_action :valid_user,       only: [:eidt, :update]
+  before_action :valid_user,       only: [:edit, :update]
   before_action :check_expiration, only: [:edit, :update]
 
   def new
@@ -24,7 +24,7 @@ class PasswordResetsController < ApplicationController
 
   def update
     if params[:user][:password].empty?
-      @user.erros.add(:password, "can't be empty")
+      @user.errors.add(:password, "can't be empty")
       render 'edit'
     elsif @user.update_attributes(user_params)
       log_in @user
@@ -40,7 +40,7 @@ class PasswordResetsController < ApplicationController
       params.require(:user).permit(:password, :password_confirmation)
     end
 
-    # Beforeフィルタ
+    # Beforeフィルタpassword_reset_expired
 
     def get_user
       @user = User.find_by(email: params[:email])
