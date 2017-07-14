@@ -68,4 +68,18 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     log_in_as(@user, remember_me: '0')
     assert_nil cookies['remember_token']
   end
+
+  test 'successful profile with activated user' do
+    log_in_as(@user)
+    assert_redirected_to user_url(@user)
+    follow_redirect!
+  end
+
+  test 'unsuccessful profile with not activated user' do
+    @user.toggle!(:activated)
+    log_in_as(@user)
+    get user_url(@user)
+    assert_redirected_to root_url
+    follow_redirect!
+  end
 end
