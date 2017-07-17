@@ -77,10 +77,9 @@ class User < ActiveRecord::Base
     reset_sent_at < 2.hours.ago
   end
 
-  # 試作feedの定義
-  # 完全な実装は第12章　「ユーザーをフォローする」を参照してください。
+  # ユーザーのステータスフィードを返す
   def feed
-    Micropost.where("user_id = ?", id)
+    Micropost.where("user_id IN(?) OR user_id = ?", following_ids, id)
   end
 
   # ユーザーをフォローする
